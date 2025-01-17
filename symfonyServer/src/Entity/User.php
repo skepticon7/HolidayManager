@@ -7,47 +7,58 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-class User
+class User implements \Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['groups_list' , 'groups_details'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['groups_list' , 'groups_details'])]
     private ?string $username = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['groups_details'])]
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['groups_list' , 'groups_details'])]
     private ?string $email = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(['groups_list' , 'groups_details'])]
     private ?\DateTimeInterface $birthday = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['groups_list' , 'groups_details'])]
     private ?string $profile_picture = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['groups_list' , 'groups_details'])]
     private ?string $city = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['groups_list' , 'groups_details'])]
     private ?string $country = null;
 
     /**
      * @var Collection<int, Holiday>
      */
     #[ORM\OneToMany(targetEntity: Holiday::class, mappedBy: 'user_id')]
+    #[Groups(['groups_list' , 'groups_details'])]
     private Collection $holidays;
 
     /**
      * @var Collection<int, Review>
      */
     #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'user_id')]
+    #[Groups(['groups_list' , 'groups_details'])]
     private Collection $user;
 
     public function __construct()

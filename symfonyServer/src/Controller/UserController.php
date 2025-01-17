@@ -17,6 +17,7 @@ final class UserController extends AbstractController
 {
     #[Route('/registerUser', name: 'app_user', methods: ['POST'])]
     public function registerUser(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher): JsonResponse
+
     {
         try {
             $data = json_decode($request->getContent(), true); // Use getContent() for HTTP request bodies
@@ -65,7 +66,7 @@ final class UserController extends AbstractController
     public function getUsers(EntityManagerInterface $entityManager , SerializerInterface $serializer): JsonResponse {
         try {
             $data = $entityManager->getRepository(User::class)->findAll();
-            $json = $serializer->serialize($data, 'json', ['groups' => 'user_list']);
+            $json = $serializer->serialize($data, 'json', ['groups' => 'groups_list']);
             return new JsonResponse($json, Response::HTTP_OK, [], true);
         } catch(\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
